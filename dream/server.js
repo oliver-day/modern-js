@@ -21,16 +21,25 @@ app.use(express.json()); // tells our API to accept JSON as body data
 
 // Define routes
 app.post('/dream', async (req, res) => {
-  const { prompt } = req.body;
+  try {
+    const { prompt } = req.body;
 
-  const aiResponse = await openai.createImage({
-    prompt,
-    n: 1,
-    size: '1024x1024',
-  });
+    const aiResponse = await openai.createImage({
+      prompt,
+      n: 1,
+      size: '1024x1024',
+    });
 
-  const image = aiResponse.data.data[0].url;
-  res.send({ image });
+    const image = aiResponse.data.data[0].url;
+    res.send({ image });
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).send(
+      error?.response.data.error.message ||
+      'Something went wrong'
+    );
+  }
 });
 
 // Start server
