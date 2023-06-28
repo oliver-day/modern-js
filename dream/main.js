@@ -4,6 +4,7 @@ const form = document.querySelector('form');
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
+  showSpinner();
   const data = new FormData(form);
 
   const response = await fetch('http://localhost:8080/dream', {
@@ -21,3 +22,9 @@ form.addEventListener('submit', async event => {
   const result = document.querySelector('#result');
   result.innerHTML = `<img src="${image}" width="512" />`;
 });
+
+function showSpinner() {
+  const button = document.querySelector('button');
+  button.disabled = true;
+  button.innerHTML = 'Dreaming... <span class="spinner">🧠</span>';
+}
