@@ -17,18 +17,25 @@ form.addEventListener('submit', async event => {
     }),
   });
 
-  const { image } = await response.json();
+  if (response.ok) {
 
-  const result = document.querySelector('#result');
-  result.innerHTML = `<img src="${image}" width="512" />`;
+    const { image } = await response.json();
+
+    const result = document.querySelector('#result');
+    result.innerHTML = `<img src="${image}" width="512" />`;
+  } else {
+    const error = await response.text();
+    console.log(error)
+    alert(error);
+  }
+
+  hideSpinner();
 });
 
 function showSpinner() {
   const button = document.querySelector('button');
   button.disabled = true;
   button.innerHTML = 'Dreaming... <span class="spinner">🧠</span>';
-
-  hideSpinner();
 }
 
 function hideSpinner() {
